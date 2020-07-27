@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+ENV LANG C.UTF-8
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
     GIT_CLONE="git clone --depth 10" && \
@@ -34,15 +35,10 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
         unzip \
         unrar \
         zsh \
-        ttf-wqy-microhei   #文泉驿-微米黑 \
-        ttf-wqy-zenhei     #文泉驿-正黑 \
-        xfonts-wqy         #文泉驿-点阵宋体 \
-        && \    
-
-    locale-gen zh_CN.UTF-8 && \
-    update-locale LANG=zh_CN.UTF-8 LANGUAGE=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8 && \
-    
-
+        ttf-wqy-microhei  \
+        ttf-wqy-zenhei    \
+        xfonts-wqy       \
+        && \  
 # ==================================================================
 # python
 # ------------------------------------------------------------------
@@ -119,4 +115,3 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/*
-ENV LANG=zh_CN.UTF-8 LANGUAGE=zh_CN.UTF-8 LC_ALL=zh_CN.UTF-8
