@@ -35,10 +35,11 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
         unzip \
         unrar \
         zsh \
-        ttf-wqy-microhei  \
+        ttf-wqy-microhei    \
         ttf-wqy-zenhei    \
-        xfonts-wqy       \
-        && \  
+        xfonts-wqy      \
+        && \    
+
 # ==================================================================
 # python
 # ------------------------------------------------------------------
@@ -61,7 +62,12 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     # python3.6 ~/get-pip.py && \
     ln -s /usr/bin/python3.6 /usr/local/bin/python3 && \
     ln -s /usr/bin/python3.6 /usr/local/bin/python && \
-
+    #tsinghua pip mirror
+    $PIP_INSTALL -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U \
+    && \
+    python -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \ 
+    python -m pip config set install.trusted-host mirrors.aliyun.com \
+    && \
     $PIP_INSTALL \
         setuptools \
         && \
@@ -87,27 +93,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     && sed -i 's/^plugins.*/plugins=(git docker)/' ~/.zshrc \
     && \
     rm -rf /tmp/* && \
-# ==================================================================
-# board
-# ------------------------------------------------------------------   
-    #tsinghua pip mirror
-    $PIP_INSTALL -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U \
-    && \
-    python -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \ 
-    python -m pip config set install.trusted-host mirrors.aliyun.com \
-    && \
-        rm -rf /var/lib/apt/lists/* \
-           /etc/apt/sources.list.d/cuda.list \
-           /etc/apt/sources.list.d/nvidia-ml.list && \
-    # apt source
-    rm -rf /etc/apt/sources.lists && \
-    touch /etc/apt/sources.lists    && \
-    echo deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse > /etc/apt/sources.list && \
-    echo deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse >> /etc/apt/sources.list && \
-    echo deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse >> /etc/apt/sources.list && \
-    echo deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse >> /etc/apt/sources.list && \
-    echo deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse >> /etc/apt/sources.list && \
-    apt-get update && \
+
 # ==================================================================
 # config & cleanup 2
 # ------------------------------------------------------------------
